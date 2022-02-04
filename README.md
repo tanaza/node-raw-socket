@@ -527,6 +527,14 @@ The previous example can be re-written to use this form:
 
     socket.setOption (level, option, 1);
 
+## socket.bindSocket (srcIpAddress)
+
+The `bindSocket()` method tells the socket which specific interface to use for the outgoing connection.
+Use the `bind()` function to bind the socket to your srcIpAddress.
+srcIpAddress param is a string - classic quad dotted form. Example:
+
+    socket.bindSocket("192.168.1.3")
+
 # Example Programs
 
 Example programs are included under the modules `example` directory.
