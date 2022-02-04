@@ -261,6 +261,7 @@ void SocketWrap::Init (Local<Object> exports) {
 	Nan::SetPrototypeMethod(tpl, "recv", Recv);
 	Nan::SetPrototypeMethod(tpl, "send", Send);
 	Nan::SetPrototypeMethod(tpl, "setOption", SetOption);
+	Nan::SetPrototypeMethod(tpl, "bindSocket", BindSocket);
 
 	SocketWrap_constructor.Reset(tpl);
 	Nan::Set(exports, Nan::New("SocketWrap").ToLocalChecked(), Nan::GetFunction(tpl).ToLocalChecked());
@@ -742,6 +743,24 @@ NAN_METHOD(SocketWrap::SetOption) {
 		return;
 	}
 	
+	info.GetReturnValue().Set(info.This());
+}
+
+NAN_METHOD(SocketWrap::BindSocket) {
+	Nan::HandleScope scope;
+	
+	SocketWrap* socket = SocketWrap::Unwrap<SocketWrap> (info.This ());
+
+	if (info.Length () == 0) {
+		Nan::ThrowError("One argument required");
+		return;
+	}
+
+	sockaddr_in localaddr = {0};
+	localaddr.sin_family = AF_UNSPEC;
+	localaddr.sin_addr.s_addr = inet_addr((const char *)&info[0]);
+	bind(socket->poll_fd_, (sockaddr*)&localaddr, sizeof(localaddr));
+
 	info.GetReturnValue().Set(info.This());
 }
 

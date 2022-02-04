@@ -62,6 +62,10 @@ function Socket (options) {
 
 util.inherits (Socket, events.EventEmitter);
 
+Socket.prototype.bindSocket = function (srcIpAddress) {
+	this.wrap.bindSocket (srcIpAddress)
+}
+
 Socket.prototype.close = function () {
 	this.wrap.close ();
 	return this;
