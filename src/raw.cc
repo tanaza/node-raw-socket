@@ -756,9 +756,17 @@ NAN_METHOD(SocketWrap::BindSocket) {
 		return;
 	}
 
+	if (! info[0]->IsString ()) {
+		Nan::ThrowTypeError("Address argument must be a string");
+		return;
+	}
+	v8::Isolate* isolate = info.GetIsolate();
+  v8::String::Utf8Value ipParam(isolate, info[0]);
+  std::string ipAddress(*ipParam);
+
 	sockaddr_in localaddr = {0};
 	localaddr.sin_family = AF_UNSPEC;
-	localaddr.sin_addr.s_addr = inet_addr((const char *)&info[0]);
+	localaddr.sin_addr.s_addr = inet_addr((const char *)&ipAddress);
 	bind(socket->poll_fd_, (sockaddr*)&localaddr, sizeof(localaddr));
 
 	info.GetReturnValue().Set(info.This());
