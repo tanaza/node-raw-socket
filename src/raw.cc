@@ -761,8 +761,8 @@ NAN_METHOD(SocketWrap::BindSocket) {
 		return;
 	}
 	v8::Isolate* isolate = info.GetIsolate();
-  v8::String::Utf8Value ipParam(isolate, info[0]);
-  std::string ipAddress(*ipParam);
+	v8::String::Utf8Value ipParam(isolate, info[0]);
+	std::string ipAddress(*ipParam);
 
 	sockaddr_in localaddr = {0};
 	localaddr.sin_family = AF_UNSPEC;
